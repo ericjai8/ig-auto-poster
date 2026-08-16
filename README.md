@@ -2,24 +2,24 @@
 
 Fully automated fact-card posting via GitHub Actions. No server required.
 
+## Current status
+- Posting pipeline ( + GitHub Actions) is set up and ready 
+- Focused on generating a starter batch of 50-100 high-quality facts to seed the queue
+- Template-based card design for now; custom illustrations per fact are a future possibility
+
 ## How it works
-- `generate_facts_content.py` renders fact cards as images and adds them to `post_queue.json`.
-- `ig_auto_post.py` posts the next queued item to Instagram, using this
+-  renders fact cards as images and adds them to .
+-  posts the next queued item to Instagram, using this 
   repo's own files (via raw.githubusercontent.com) as the public image URL
   Instagram's API requires.
-- Two GitHub Actions workflows run these on a schedule — see `.github/workflows/`.
+- Two GitHub Actions workflows run these on a schedule — see .
 
-## One-time setup (see full walkthrough from Claude)
-1. Push this repo to GitHub as a **public** repo (raw.githubusercontent.com
-   URLs only work for public repos, unless you set up a different image host).
-2. In repo Settings > Secrets and variables > Actions, add:
-   - `IG_USER_ID` — your Instagram Business Account ID
-   - `IG_ACCESS_TOKEN` — your long-lived Page access token
-3. Confirm Actions are enabled (Settings > Actions > General).
-4. Edit the `FACTS` list in `generate_facts_content.py` to your chosen niche.
-5. Manually run the "Generate more content" workflow once (Actions tab) to
-   seed the queue before the poster workflow's first scheduled run.
+## Next steps 
+1. Decide on a niche/topic for the fact cards (e.g. psychology, history, space)
+2. Generate a diverse batch of 50-100 facts in that niche
+3. Tweak the card design (colors, layout, fonts) to match the niche
+4. Let the auto-poster run and focus on community engagement!
 
 ## Adjusting the schedule
-Edit the `cron` lines in `.github/workflows/auto-post.yml`. Cron times are
+Edit the  lines in . Cron times are
 always UTC.

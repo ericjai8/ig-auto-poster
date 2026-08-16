@@ -1,18 +1,19 @@
 """
 Fact Card Generator
 ====================
-Generates square Instagram image cards from a bank of facts, plus matching
+
+Generates square Instagram image cards from a bank of facts, plus matching 
 captions, and appends them to post_queue.json (the same file ig_auto_post.py
 reads from).
 
-This handles content CREATION. It does not upload/host the images —
-Instagram's API needs a public URL for each image, so after running this
-you still need to upload the /generated_cards/ folder somewhere public
-(S3, Cloudinary, Imgur API, your own site) and update media_url in
+This handles content CREATION. It does not upload/host the images — 
+Instagram's API needs a public URL for each image, so after running this 
+you still need to upload the /generated_cards/ folder somewhere public 
+(S3, Cloudinary, Imgur API, your own site) and update media_url in 
 post_queue.json to point at the hosted versions.
 
 Install deps:
-    pip install Pillow --break-system-packages
+    pip install Pillow --break-system-packages 
 """
 
 import json
@@ -31,11 +32,15 @@ CARD_SIZE = (1080, 1080)  # Instagram square
 # ---------------------------------------------------------------------------
 FACTS = [
     {
+        "text": "The shortest war in history lasted just 38 minutes. It was between Zanzibar and England in 1896.",
+        "category": "History",
+    },
+    {
         "text": "Octopuses have three hearts, and two of them stop beating when it swims — which is why they prefer crawling.",
         "category": "Biology",
     },
     {
-        "text": "A day on Venus is longer than a year on Venus. It rotates so slowly that one spin takes 243 Earth days.",
+        "text": "A day on Venus is longer than a year on Venus. It rotates so slowly that one spin takes 243 Earth days.",  
         "category": "Space",
     },
     {
@@ -44,22 +49,18 @@ FACTS = [
     },
     {
         "text": "Sharks existed before trees. Sharks date back roughly 400 million years; the earliest trees appeared about 350 million years ago.",
-        "category": "History",
+        "category": "History", 
     },
     {
         "text": "Your brain uses about 20% of your body's total energy, despite being only about 2% of your body weight.",
         "category": "Psychology",
     },
-    {
-        "text": "Honey never spoils. Edible honey has been found in Egyptian tombs over 3,000 years old.",
-        "category": "Science",
-    },
 ]
 
-# Color palette pairs (background, text) — rotate per card for variety
+# Color palette pairs (background, text) — rotate per card for variety  
 PALETTES = [
     ("#0F172A", "#F8FAFC"),
-    ("#1E1B4B", "#E0E7FF"),
+    ("#1E1B4B", "#E0E7FF"), 
     ("#111827", "#FDE68A"),
     ("#052E16", "#DCFCE7"),
 ]
@@ -68,7 +69,7 @@ PALETTES = [
 def get_font(size, bold=False):
     # Falls back to default if no system fonts found — swap in your own .ttf for a real brand look
     candidates = [
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",  
     ]
     for path in candidates:
         if Path(path).exists():
@@ -103,7 +104,7 @@ def render_card(fact, index):
     footer_font = get_font(28)
     draw.text((60, CARD_SIZE[1] - 80), "Follow for more", font=footer_font, fill=fg)
 
-    OUTPUT_DIR.mkdir(exist_ok=True)
+    OUTPUT_DIR.mkdir(exist_ok=True)  
     path = OUTPUT_DIR / f"fact_{index:03d}.png"
     img.save(path)
     return path
@@ -123,7 +124,7 @@ def load_queue():
 
 
 def save_queue(queue):
-    with open(QUEUE_FILE, "w") as f:
+    with open(QUEUE_FILE, "w") as f:  
         json.dump(queue, f, indent=2)
 
 
@@ -135,13 +136,13 @@ def main():
             # Relative path — ig_auto_post.py resolves this into a public
             # raw.githubusercontent.com URL automatically at post time.
             "media_url": str(img_path),
-            "caption": build_caption(fact),
+            "caption": build_caption(fact),  
             "media_type": "IMAGE",
         })
         print(f"Generated card: {img_path}")
 
     save_queue(queue)
-    print(f"\nAdded {len(FACTS)} items to {QUEUE_FILE}.")
+    print(f"\nAdded {len(FACTS)} items to {QUEUE_FILE}.")  
     print("These will be committed by the workflow — no manual upload needed.")
 
 
