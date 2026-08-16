@@ -1,0 +1,31 @@
+name: Generate more content
+
+on:
+  workflow_dispatch: {}  # run this from the Actions tab whenever the queue is low
+  schedule:
+    # Optional: auto-refill weekly, Sunday midnight UTC. Delete this if you'd
+    # rather trigger it manually after editing the FACTS list yourself.
+    - cron: "0 0 * * 0"
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install Pillow
+
+      - name: Generate fact cards
+        run: python generate_facts_content.py
+
+      - name: Commit new content
+        run: |
+          git config user.name "ig-auto-poster-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add generated_cards/ post_queue.json
+          git diff --quiet --cached || git commit -m "chore: generate new fact cards"
+          git push
