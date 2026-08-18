@@ -1,12 +1,7 @@
 name: Auto-post to Instagram
 
 on:
-  schedule:
-    # 08:00 and 18:00 UTC daily — edit these to your preferred times.
-    # Cron is always UTC; convert from your local time zone.
-    - cron: "0 8 * * *"
-    - cron: "0 18 * * *"
-  workflow_dispatch: {}  # lets you trigger a post manually from the Actions tab
+  workflow_dispatch: {}  # manual trigger only — cron disabled for now
 
 jobs:
   post:

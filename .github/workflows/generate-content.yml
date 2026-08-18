@@ -1,11 +1,7 @@
 name: Generate more content
 
 on:
-  workflow_dispatch: {}  # run this from the Actions tab whenever the queue is low
-  schedule:
-    # Optional: auto-refill weekly, Sunday midnight UTC. Delete this if you'd
-    # rather trigger it manually after editing the FACTS list yourself.
-    - cron: "0 0 * * 0"
+  workflow_dispatch: {}  # manual trigger only — cron disabled for now
 
 jobs:
   generate:
